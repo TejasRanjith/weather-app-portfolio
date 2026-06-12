@@ -72,18 +72,3 @@ A recorded screen-sharing explanation of the project has been prepared, detailin
 - Explanation of compliance with the PM Accelerator requirements.
 
 **Demo Video URL**: [Insert your viewable video link here (Google Drive, YouTube, or Vimeo)]
-
----
-
-## 📦 GitHub Submission
-1. Create a new **Public** and **Open-Source** repository on GitHub.
-2. Initialize Git, add files, commit, and push:
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: integrate developer profile, requirements, and update readme details"
-   git branch -M main
-   git remote add origin <your-github-repo-url>
-   git push -u origin main
-   ```
-3. Ensure the repository visibility is set to **Public** so the evaluation tech team has access.
