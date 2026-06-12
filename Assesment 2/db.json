@@ -1,0 +1,88 @@
+{
+  "records": [
+    {
+      "id": "rec_paris_default",
+      "searchQuery": "Paris, France",
+      "locationName": "Paris, France",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-05",
+      "temperatures": [
+        {
+          "date": "2026-06-01",
+          "tempC": 21,
+          "tempF": 70,
+          "condition": "Partly Cloudy",
+          "humidity": 60,
+          "windKmh": 12,
+          "precipMm": 0,
+          "conditionIcon": "CloudSun"
+        },
+        {
+          "date": "2026-06-02",
+          "tempC": 23,
+          "tempF": 73,
+          "condition": "Sunny",
+          "humidity": 55,
+          "windKmh": 10,
+          "precipMm": 0,
+          "conditionIcon": "Sun"
+        },
+        {
+          "date": "2026-06-03",
+          "tempC": 22,
+          "tempF": 72,
+          "condition": "Light Shower",
+          "humidity": 78,
+          "windKmh": 18,
+          "precipMm": 3,
+          "conditionIcon": "CloudRain"
+        },
+        {
+          "date": "2026-06-04",
+          "tempC": 19,
+          "tempF": 66,
+          "condition": "Cloudy",
+          "humidity": 65,
+          "windKmh": 15,
+          "precipMm": 0,
+          "conditionIcon": "Cloud"
+        },
+        {
+          "date": "2026-06-05",
+          "tempC": 20,
+          "tempF": 68,
+          "condition": "Sunny Intervals",
+          "humidity": 58,
+          "windKmh": 11,
+          "precipMm": 0.5,
+          "conditionIcon": "CloudSun"
+        }
+      ],
+      "youtubeVideos": [
+        {
+          "title": "Paris Travel Guide - Top 10 Places to Visit",
+          "url": "https://www.youtube.com/results?search_query=travel+guide+paris+france",
+          "description": "Explore the beautiful city of Paris including the Eiffel Tower, Louvre, and Montmartre.",
+          "category": "Travel Guide"
+        },
+        {
+          "title": "Paris 4K Drone Aerial Tour",
+          "url": "https://www.youtube.com/results?search_query=paris+drone+aerial+4k",
+          "description": "Stunning aerial views of the Seine River, Notre-Dame, and Arc de Triomphe.",
+          "category": "Drone Tour"
+        },
+        {
+          "title": "French Rain & Street Walk (Vlog)",
+          "url": "https://www.youtube.com/results?search_query=paris+walking+vlog+rain",
+          "description": "An immersive localized stroll under typical seasonal skies along Paris boulevards.",
+          "category": "Vlog"
+        }
+      ],
+      "locationTrivia": "Paris enjoys a temperate maritime climate where early summer months like June bridge pleasant temperatures averaging 21°C with occasional light Atlantic showers. Historically, the warmest June day was recorded back in 1947 reaching 37.6°C!",
+      "createdAt": "2026-06-11T08:00:00.000Z",
+      "updatedAt": "2026-06-11T08:00:00.000Z"
+    }
+  ]
+}

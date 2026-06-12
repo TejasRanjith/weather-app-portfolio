@@ -1,0 +1,6 @@
+{
+  "name": "Weather App",
+  "description": "A high-performance weather dashboard featuring real-time meteorological tracking, dynamic 5-day forecasts, custom interactive analytics, and precise multi-format geolocational search.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

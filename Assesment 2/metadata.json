@@ -1,0 +1,6 @@
+{
+  "name": "Weather Dashboard",
+  "description": "A comprehensive weather tracking dashboard with location geocoding, historical ranges, local database persistent CRUD operations, export formats, and YouTube and map integrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

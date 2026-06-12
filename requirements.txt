@@ -1,0 +1,52 @@
+# System and Package Requirements for Weather Apps
+
+This file lists the required software environments, libraries, and packages to install, build, and run the Weather Applications.
+
+---
+
+## 1. System Requirements
+- **Node.js**: Version 18.0.0 or higher (LTS recommended)
+- **npm**: Version 9.0.0 or higher (bundled with Node.js)
+- **TypeScript**: Version 5.0.0 or higher (used for compile-time check)
+
+---
+
+## 2. Core Dependencies & Libraries
+
+### Project 1: Atmos / Weather Engine V1.0 (Assessment 1)
+These packages are managed via `Assesment 1/package.json`:
+- `@google/genai` (v2.4.0) - Official Google Gemini API client SDK
+- `react` (v19.0.1) - Front-end component framework
+- `react-dom` (v19.0.1) - Virtual DOM rendering engine
+- `motion` (v12.23.24) - High-performance animation and layout transition library
+- `lucide-react` (v0.546.0) - Modern clean vector UI icons
+- `vite` (v6.2.3) - High-speed frontend development server and bundler
+- `@tailwindcss/vite` (v4.1.14) - Tailwind CSS v4 compiler and asset processor
+- `tailwindcss` (v4.1.14) - Modern utility-first styling system
+- `express` (v4.21.2) - Routing and HTTP server
+- `dotenv` (v17.2.3) - Environment variables loader
+
+### Project 2: Atmosphere DB Engine v2.1 (Assessment 2)
+These packages are managed via `Assesment 2/package.json`:
+- All frontend packages listed above (React 19, Motion 12, Lucide React, Tailwind CSS v4, Vite 6)
+- `@google/genai` (v2.4.0) - Server-side geocoding and trivia generation using Gemini 3.5 Flash
+- `express` (v4.21.2) - Back-end router with local JSON persistency layer
+- `tsx` (v4.21.0) - Node execution environment supporting direct TypeScript execution (`tsx server.ts`)
+- `esbuild` (v0.25.0) - Backend bundle bundler compiling backend script into standalone CJS bundle
+- `dotenv` (v17.2.3) - Local `.env` config reader
+
+---
+
+## 3. Installation Guide
+
+### To install all dependencies for Assessment 1:
+```bash
+cd "Assesment 1"
+npm install
+```
+
+### To install all dependencies for Assessment 2:
+```bash
+cd "Assesment 2"
+npm install
+```

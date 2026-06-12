@@ -1,0 +1,70 @@
+{
+  "entities": {
+    "WeatherRecord": {
+      "title": "Weather Record",
+      "description": "Historical and forecasted weather query containing detailed temperatures, YouTube integrations, and maps geocoding info.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique record identifier"
+        },
+        "searchQuery": {
+          "type": "string",
+          "description": "Original raw location query entered by the user"
+        },
+        "locationName": {
+          "type": "string",
+          "description": "Fuzzy-matched formalized name of the destination location"
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Geographical latitude"
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Geographical longitude"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Lower-bound date of historical query (YYYY-MM-DD)"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Upper-bound date of historical query (YYYY-MM-DD)"
+        },
+        "temperatures": {
+          "type": "array",
+          "description": "Sequential weather statistics for each day in range"
+        },
+        "youtubeVideos": {
+          "type": "array",
+          "description": "Destination videos on YouTube for sightseeing"
+        },
+        "locationTrivia": {
+          "type": "string",
+          "description": "Historic local climate facts and trivia"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of query creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last modifications"
+        }
+      },
+      "required": [
+        "id",
+        "searchQuery",
+        "locationName",
+        "latitude",
+        "longitude",
+        "startDate",
+        "endDate",
+        "temperatures",
+        "createdAt"
+      ]
+    }
+  }
+}
