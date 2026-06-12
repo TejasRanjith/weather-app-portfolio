@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Screen Recorder - Demo Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .recorder-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .video-preview-container {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #020617;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .recording-overlay {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      border-radius: 99px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-red);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .timer {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 1; }
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    button {
+      padding: 0.85rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2563eb 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--accent-red) 0%, #dc2626 100%);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none !important;
+      filter: none !important;
+      transform: none !important;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .info-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-blue);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .status-banner {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      text-align: center;
+      display: none;
+      font-weight: 500;
+    }
+
+    .status-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Browser Screen Recorder</h1>
+      <p class="subtitle">Quickly capture your 1-2 minute project demo video directly from your browser. No downloads or installations required.</p>
+    </header>
+
+    <div class="recorder-panel">
+      <div id="statusBanner" class="status-banner status-success"></div>
+
+      <div class="video-preview-container">
+        <video id="preview" autoplay muted playsinline></video>
+        
+        <div id="recordingOverlay" class="recording-overlay" style="display: none;">
+          <div class="pulse-dot"></div>
+          <span class="timer" id="timerDisplay">00:00</span>
+        </div>
+
+        <div id="placeholderText" style="color: var(--text-muted); font-size: 0.95rem; text-align: center; max-width: 80%; line-height: 1.5;">
+          Your screen capture output will appear here after granting permissions.<br>
+          <span style="font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 8px;">Click "Start Capture Session" below to initialize.</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="btnStart" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Start Capture Session
+        </button>
+        <button id="btnRecord" class="btn-danger" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          Record Demo
+        </button>
+        <button id="btnPause" class="btn-secondary" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+          Pause
+        </button>
+        <button id="btnStop" class="btn-danger" disabled style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect></svg>
+          Stop &amp; Save Video
+        </button>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Recording Instructions
+      </div>
+      <div class="info-steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div>Click <strong>Start Capture Session</strong>. Your browser will ask you to select a screen, window, or tab. Select the tab or window displaying your running Weather App. Check the <strong>"Share system audio"</strong> option if you'd like to capture audio outputs.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div>Click <strong>Record Demo</strong> to start recording. You will see a live counter timer in the corner showing that recording is active. Speak into your microphone to explain both your code and the output results.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div>Click <strong>Stop & Save Video</strong> when done. The recorded video file will compile instantly and download to your machine as `weather_app_demo.webm`.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div>Upload the resulting video to your Google Drive, YouTube, or Vimeo account, and paste the viewable URL in your final submission portal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let mediaStream = null;
+    let audioStream = null;
+    let combinedStream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    const videoPreview = document.getElementById('preview');
+    const statusBanner = document.getElementById('statusBanner');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const recordingOverlay = document.getElementById('recordingOverlay');
+    const placeholderText = document.getElementById('placeholderText');
+
+    const btnStart = document.getElementById('btnStart');
+    const btnRecord = document.getElementById('btnRecord');
+    const btnPause = document.getElementById('btnPause');
+    const btnStop = document.getElementById('btnStop');
+
+    // Timer helpers
+    function updateTimer() {
+      secondsElapsed++;
+      const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+      const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+      timerDisplay.textContent = `${mins}:${secs}`;
+    }
+
+    function startTimer() {
+      secondsElapsed = 0;
+      timerDisplay.textContent = "00:00";
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    // Step 1: Initialize screen and audio capturing
+    btnStart.addEventListener('click', async () => {
+      statusBanner.style.display = 'none';
+      try {
+        // Grab screen share stream
+        mediaStream = await navigator.mediaDevices.getDisplayMedia({
+          video: { cursor: "always" },
+          audio: true // Attempt to capture system/tab audio
+        });
+
+        // Try to grab microphone audio
+        try {
+          audioStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              sampleRate: 44100
+            }
+          });
+        } catch (err) {
+          console.warn("Microphone access not granted or unavailable, system will record video only.", err);
+        }
+
+        // Combine video and audio tracks
+        const tracks = [...mediaStream.getVideoTracks()];
+        
+        if (audioStream) {
+          tracks.push(...audioStream.getAudioTracks());
+        } else if (mediaStream.getAudioTracks().length > 0) {
+          tracks.push(...mediaStream.getAudioTracks());
+        }
+
+        combinedStream = new MediaStream(tracks);
+        videoPreview.srcObject = combinedStream;
+        placeholderText.style.display = 'none';
+
+        // Listen for when user stops screen share from browser overlay
+        mediaStream.getVideoTracks()[0].addEventListener('ended', () => {
+          handleStop();
+        });
+
+        btnStart.disabled = true;
+        btnRecord.disabled = false;
+        
+        statusBanner.textContent = "Session initialized! Ready to record.";
+        statusBanner.className = "status-banner status-success";
+        statusBanner.style.display = "block";
+      } catch (err) {
+        console.error("Error starting stream capture:", err);
+        alert("Failed to initialize capture session: " + err.message);
+      }
+    });
+
+    // Step 2: Begin Recording
+    btnRecord.addEventListener('click', () => {
+      recordedChunks = [];
+      let options = { mimeType: 'video/webm;codecs=vp9,opus' };
+      
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        options = { mimeType: 'video/webm;codecs=vp8,opus' };
+      }
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        options = { mimeType: 'video/webm' };
+      }
+
+      try {
+        mediaRecorder = new MediaRecorder(combinedStream, options);
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(combinedStream);
+      }
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        
+        // Auto-download file
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'weather_app_demo.webm';
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 100);
+
+        statusBanner.textContent = "Recording saved successfully! Check your Downloads folder for 'weather_app_demo.webm'.";
+        statusBanner.className = "status-banner status-success";
+        statusBanner.style.display = "block";
+      };
+
+      mediaRecorder.start(1000); // chunk every 1 second
+      startTimer();
+      
+      recordingOverlay.style.display = 'flex';
+      btnRecord.disabled = true;
+      btnPause.disabled = false;
+      btnStop.disabled = false;
+    });
+
+    // Pause recording toggle
+    btnPause.addEventListener('click', () => {
+      if (mediaRecorder.state === 'recording') {
+        mediaRecorder.pause();
+        stopTimer();
+        btnPause.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Resume
+        `;
+      } else if (mediaRecorder.state === 'paused') {
+        mediaRecorder.resume();
+        // Continue timer
+        timerInterval = setInterval(updateTimer, 1000);
+        btnPause.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+          Pause
+        `;
+      }
+    });
+
+    // Step 3: Stop & Save
+    btnStop.addEventListener('click', () => {
+      handleStop();
+    });
+
+    function handleStop() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      stopTimer();
+      
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+      }
+      if (audioStream) {
+        audioStream.getTracks().forEach(track => track.stop());
+      }
+
+      recordingOverlay.style.display = 'none';
+      btnStart.disabled = false;
+      btnRecord.disabled = true;
+      btnPause.disabled = true;
+      btnStop.disabled = true;
+      placeholderText.style.display = 'block';
+      videoPreview.srcObject = null;
+    }
+  </script>
+</body>
+</html>
